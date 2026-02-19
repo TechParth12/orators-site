@@ -6,8 +6,15 @@ function OratorsText({ scrollY }) {
   const ref = useRef()
   const { viewport } = useThree()
 
-  // Responsive size based on screen width
-  const textSize = viewport.width < 6 ? 0.5 : viewport.width < 10 ? 0.8 : 1.3
+  // More aggressive responsive scaling
+  let textSize = 1.3
+  if (viewport.width < 5) {
+    textSize = 0.35
+  } else if (viewport.width < 7) {
+    textSize = 0.45
+  } else if (viewport.width < 10) {
+    textSize = 0.7
+  }
 
   useFrame(() => {
     if (!ref.current) return
@@ -21,14 +28,14 @@ function OratorsText({ scrollY }) {
         ref={ref}
         font="/fonts/helvetiker_regular.typeface.json"
         size={textSize}
-        height={0.25}
+        height={0.2}
         bevelEnabled
         bevelThickness={0.02}
         bevelSize={0.01}
       >
         ORATORS
         <meshPhysicalMaterial
-          color="#ffbe76"
+          color="#CF9FFF"
           transmission={1}
           roughness={0.05}
           thickness={2}
@@ -42,18 +49,29 @@ function OratorsText({ scrollY }) {
 
 export default function Hero3D() {
   const [scrollY, setScrollY] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+
     const handleScroll = () => {
       const scrollPercent =
         window.scrollY /
         (document.body.scrollHeight - window.innerHeight)
-
       setScrollY(scrollPercent)
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("resize", checkMobile)
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
 
   return (
@@ -69,7 +87,10 @@ export default function Hero3D() {
       }}
     >
       <Canvas
-        camera={{ position: [0, 0, 7], fov: 45 }}
+        camera={{
+          position: [0, 0, isMobile ? 5 : 7],
+          fov: isMobile ? 60 : 45
+        }}
         gl={{ alpha: true }}
         style={{ background: "transparent" }}
       >
