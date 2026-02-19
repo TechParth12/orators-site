@@ -1,13 +1,16 @@
-import { Canvas, useFrame } from "@react-three/fiber"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Text3D, Center } from "@react-three/drei"
 import { useRef, useState, useEffect } from "react"
 
 function OratorsText({ scrollY }) {
   const ref = useRef()
+  const { viewport } = useThree()
+
+  // Responsive size based on screen width
+  const textSize = viewport.width < 6 ? 0.5 : viewport.width < 10 ? 0.8 : 1.3
 
   useFrame(() => {
     if (!ref.current) return
-
     ref.current.rotation.y += (scrollY * 0.5 - ref.current.rotation.y) * 0.05
     ref.current.position.y = Math.sin(scrollY * 3) * 0.1
   })
@@ -17,15 +20,15 @@ function OratorsText({ scrollY }) {
       <Text3D
         ref={ref}
         font="/fonts/helvetiker_regular.typeface.json"
-        size={1.3}
-        height={0.35}
+        size={textSize}
+        height={0.25}
         bevelEnabled
-        bevelThickness={0.03}
-        bevelSize={0.02}
+        bevelThickness={0.02}
+        bevelSize={0.01}
       >
         ORATORS
         <meshPhysicalMaterial
-          color="#CF9FFF"
+          color="#ffbe76"
           transmission={1}
           roughness={0.05}
           thickness={2}
