@@ -16,7 +16,6 @@ html {
 
 /* Tablet */
 @media (max-width: 1024px) {
-
   section {
     padding: 100px 40px !important;
   }
@@ -30,18 +29,32 @@ html {
 /* Mobile */
 @media (max-width: 768px) {
 
+  /* Show hamburger, hide desktop links */
+  .desktop-links {
+    display: none !important;
+  }
+
+  .desktop-cta {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .mobile-menu {
+    display: flex !important;
+  }
+
   /* Navbar */
   nav {
     padding: 14px 20px !important;
   }
 
-  nav > div:nth-child(2) {
-    display: none !important;
-  }
-
-  nav > a:last-child {
-    font-size: 11px !important;
-    padding: 8px 16px !important;
+  /* Hero */
+  #home {
+    height: 100vh;
+    height: 100dvh;
   }
 
   /* Sections */
@@ -59,7 +72,6 @@ html {
     font-size: 18px !important;
   }
 
-  /* Body text */
   p {
     font-size: 13px !important;
   }
@@ -70,25 +82,15 @@ html {
     gap: 16px !important;
   }
 
-  /* Faculty cards */
-  #team div[style*="flex-wrap"] {
-    flex-direction: column !important;
-    align-items: center !important;
+  /* Faculty card */
+  #faculty div[style*="400px"] {
+    max-width: 90% !important;
   }
 
-  /* Events */
+  /* Flex wraps to column */
+  #vision div[style*="flex-wrap"],
+  #about div[style*="flex-wrap"],
   #events div[style*="flex-wrap"] {
-    flex-direction: column !important;
-  }
-
-  /* Vision cards */
-  #vision div[style*="flex-wrap"] {
-    flex-direction: column !important;
-    align-items: center !important;
-  }
-
-  /* About cards */
-  #about div[style*="flex-wrap"] {
     flex-direction: column !important;
     align-items: center !important;
   }
@@ -109,53 +111,34 @@ html {
     gap: 40px !important;
   }
 
-  /* Glass cards general */
+  /* Glass cards */
   div[style*="280px"],
   div[style*="260px"] {
     width: 100% !important;
     max-width: 320px !important;
-  }
-
-  /* Hero tagline */
-  #home div[style*="bottom"] {
-    bottom: 40px !important;
-  }
-
-  #home div[style*="bottom"] p {
-    font-size: 14px !important;
-    letter-spacing: 1px !important;
-  }
-
-  #home div[style*="inline-block"] {
-    padding: 12px 24px !important;
   }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
 
-  /* Team single column */
   #team div[style*="grid"] {
     grid-template-columns: 1fr !important;
     gap: 14px !important;
   }
 
-  /* Even smaller headings */
   h2 {
     font-size: 24px !important;
   }
 
-  /* Navbar logo */
   nav img {
-    height: 30px !important;
+    height: 28px !important;
   }
 
-  /* Event poster */
   #events div[style*="300px"] {
     height: 200px !important;
   }
 
-  /* Registration inputs */
   input, select {
     font-size: 13px !important;
     padding: 12px 14px !important;

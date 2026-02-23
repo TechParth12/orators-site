@@ -17,11 +17,16 @@ export default function HomePage() {
       <StarBackground />
       <Navbar />
 
+      {/* HERO SECTION */}
       <section
         id="home"
         style={{
           height: "100vh",
-          position: "relative"
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
         <Hero3D />
@@ -32,26 +37,28 @@ export default function HomePage() {
           transition={{ duration: 1.5, ease: "easeOut" }}
           style={{
             position: "absolute",
-            bottom: "80px",
+            bottom: "12%",
             width: "100%",
             textAlign: "center",
             color: "#E8ECF1",
-            zIndex: 1
+            zIndex: 1,
+            padding: "0 20px"
           }}
         >
           <div
             style={{
               display: "inline-block",
-              padding: "18px 36px",
+              padding: "14px 28px",
               background: "rgba(255,255,255,0.05)",
               backdropFilter: "blur(12px)",
               border: "1px solid rgba(124,92,255,0.3)",
-              borderRadius: "40px"
+              borderRadius: "40px",
+              maxWidth: "90%"
             }}
           >
             <p
               style={{
-                fontSize: "20px",
+                fontSize: "clamp(12px, 3.5vw, 20px)",
                 letterSpacing: "2px",
                 fontFamily: "serif",
                 margin: 0
@@ -69,7 +76,7 @@ export default function HomePage() {
               ease: "easeInOut"
             }}
             style={{
-              marginTop: "30px",
+              marginTop: "24px",
               width: "26px",
               height: "44px",
               border: "2px solid #7C5CFF",
@@ -95,12 +102,25 @@ export default function HomePage() {
         </motion.div>
       </section>
 
+      {/* ABOUT SECTION */}
       <About />
+
+      {/* VISION / MISSION SECTION */}
       <Vision />
+
+      {/* FACULTY INCHARGE */}
       <Faculty />
+
+      {/* TEAM SECTION */}
       <Team />
+
+      {/* EVENTS SECTION */}
       <Events />
+
+      {/* REGISTRATION SECTION */}
       <Register />
+
+      {/* FOOTER */}
       <Footer />
 
     </div>
