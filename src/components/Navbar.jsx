@@ -1,8 +1,21 @@
-import { motion } from "framer-motion"
+import { motion, useScroll, useMotionValueEvent } from "framer-motion"
+import { useState } from "react"
 
 const links = ["Home", "About", "Events", "Team", "Contact"]
 
 export default function Navbar() {
+  const [hidden, setHidden] = useState(false)
+  const { scrollY } = useScroll()
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious()
+    if (latest > previous && latest > 150) {
+      setHidden(true)
+    } else {
+      setHidden(false)
+    }
+  })
+
   return (
     <motion.nav
       initial={{ opacity: 0, y: -30 }}
@@ -28,7 +41,7 @@ export default function Navbar() {
         src="/images/logo.png"
         alt="Orators Club"
         style={{
-          height: "95px",
+          height: "40px",
           objectFit: "contain"
         }}
       />
@@ -55,9 +68,15 @@ export default function Navbar() {
         ))}
       </div>
 
-      {/* CTA Button */}
-      <a
+      {/* CTA Button — Hides on scroll down */}
+      <motion.a
         href="#events"
+        animate={{
+          opacity: hidden ? 0 : 1,
+          scale: hidden ? 0.8 : 1,
+          pointerEvents: hidden ? "none" : "auto"
+        }}
+        transition={{ duration: 0.3 }}
         style={{
           padding: "10px 24px",
           background: "linear-gradient(135deg, #7C5CFF, #9b7aff)",
@@ -67,14 +86,11 @@ export default function Navbar() {
           fontSize: "13px",
           letterSpacing: "1px",
           fontFamily: "sans-serif",
-          fontWeight: "600",
-          transition: "opacity 0.3s ease"
+          fontWeight: "600"
         }}
-        onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
-        onMouseLeave={(e) => (e.target.style.opacity = "1")}
       >
         Join Event
-      </a>
+      </motion.a>
     </motion.nav>
   )
 }

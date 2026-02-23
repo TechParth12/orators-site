@@ -3,6 +3,7 @@ import Navbar from "./Navbar"
 import StarBackground from "./StarBackground"
 import About from "./About"
 import Vision from "./Vision"
+import Faculty from "./Faculty"
 import Team from "./Team"
 import Events from "./Events"
 import Register from "./Register"
@@ -96,6 +97,7 @@ export default function HomePage() {
 
       <About />
       <Vision />
+      <Faculty />
       <Team />
       <Events />
       <Register />

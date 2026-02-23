@@ -14,36 +14,94 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Mobile Responsive */
+/* Tablet */
+@media (max-width: 1024px) {
+
+  section {
+    padding: 100px 40px !important;
+  }
+
+  #team div[style*="grid"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
 
+  /* Navbar */
   nav {
-    padding: 16px 20px !important;
-    flex-direction: column;
-    gap: 16px;
+    padding: 14px 20px !important;
   }
 
   nav > div:nth-child(2) {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px !important;
+    display: none !important;
   }
 
-  #home {
-    height: 100vh;
+  nav > a:last-child {
+    font-size: 11px !important;
+    padding: 8px 16px !important;
   }
 
+  /* Sections */
   section {
     padding: 80px 20px !important;
   }
 
+  /* Headings */
+  h2 {
+    font-size: 28px !important;
+    letter-spacing: 3px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  /* Body text */
+  p {
+    font-size: 13px !important;
+  }
+
+  /* Team grid */
   #team div[style*="grid"] {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 16px !important;
   }
 
+  /* Faculty cards */
+  #team div[style*="flex-wrap"] {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Events */
   #events div[style*="flex-wrap"] {
     flex-direction: column !important;
+  }
+
+  /* Vision cards */
+  #vision div[style*="flex-wrap"] {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* About cards */
+  #about div[style*="flex-wrap"] {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Registration form */
+  #register form {
+    padding: 32px 20px !important;
+    max-width: 100% !important;
+  }
+
+  /* Footer */
+  footer {
+    padding: 60px 20px 30px !important;
   }
 
   footer > div:first-child {
@@ -51,31 +109,55 @@ html {
     gap: 40px !important;
   }
 
-  div[style*="flex-wrap"] {
-    flex-direction: column !important;
-    align-items: center !important;
+  /* Glass cards general */
+  div[style*="280px"],
+  div[style*="260px"] {
+    width: 100% !important;
+    max-width: 320px !important;
   }
 
-  h2 {
-    font-size: 32px !important;
+  /* Hero tagline */
+  #home div[style*="bottom"] {
+    bottom: 40px !important;
   }
 
-  p {
+  #home div[style*="bottom"] p {
     font-size: 14px !important;
+    letter-spacing: 1px !important;
+  }
+
+  #home div[style*="inline-block"] {
+    padding: 12px 24px !important;
   }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
 
+  /* Team single column */
   #team div[style*="grid"] {
     grid-template-columns: 1fr !important;
+    gap: 14px !important;
   }
 
+  /* Even smaller headings */
   h2 {
-    font-size: 28px !important;
+    font-size: 24px !important;
   }
 
-  nav > div:nth-child(2) a {
-    font-size: 12px !important;
+  /* Navbar logo */
+  nav img {
+    height: 30px !important;
+  }
+
+  /* Event poster */
+  #events div[style*="300px"] {
+    height: 200px !important;
+  }
+
+  /* Registration inputs */
+  input, select {
+    font-size: 13px !important;
+    padding: 12px 14px !important;
   }
 }
