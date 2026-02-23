@@ -100,7 +100,7 @@ const teamMembers = [
     name: "Sarthak Bhargava",
     role: "Social Media Lead",
     image: "/images/team/member16.jpg",
-    intro: "The most laze yet effortlessly charming soul. His calm approach and creative eye help shape engaging content with ease."
+    intro: "The most lazy yet effortlessly charming soul. His calm approach and creative eye help shape engaging content with ease."
   }
 ]
 
