@@ -89,8 +89,7 @@ html {
 
   /* Flex wraps to column */
   #vision div[style*="flex-wrap"],
-  #about div[style*="flex-wrap"],
-  #events div[style*="flex-wrap"] {
+  #about div[style*="flex-wrap"] {
     flex-direction: column !important;
     align-items: center !important;
   }
@@ -117,6 +116,55 @@ html {
     width: 100% !important;
     max-width: 320px !important;
   }
+
+  /* Event cards mobile */
+  .event-top {
+    flex-direction: column !important;
+  }
+
+  .event-poster {
+    flex: none !important;
+    width: 100% !important;
+    height: 220px !important;
+    min-height: 220px !important;
+  }
+
+  .event-poster img {
+    min-height: 220px !important;
+  }
+
+  .event-info {
+    flex: none !important;
+    width: 100% !important;
+    padding: 24px 20px !important;
+  }
+
+  .event-info h3 {
+    font-size: 22px !important;
+  }
+
+  .event-buttons {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .event-buttons a,
+  .event-buttons span,
+  .event-buttons button {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 12px 20px !important;
+  }
+
+  .event-gallery {
+    padding: 16px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .event-gallery img {
+    height: 120px !important;
+  }
 }
 
 /* Small Mobile */
@@ -135,12 +183,21 @@ html {
     height: 28px !important;
   }
 
-  #events div[style*="300px"] {
-    height: 200px !important;
-  }
-
   input, select {
     font-size: 13px !important;
     padding: 12px 14px !important;
+  }
+
+  .event-poster {
+    height: 180px !important;
+    min-height: 180px !important;
+  }
+
+  .event-gallery {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .event-gallery img {
+    height: 100px !important;
   }
 }

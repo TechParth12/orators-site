@@ -29,7 +29,8 @@ const events = [
     date: "September 27, 2025",
     status: "past",
     poster: "/images/events/event2/1.jpg",
-    description: "Courtroom Drama event -  where participants presented legal arguments, witness statements, and dramatic proceedings in a simulated court setting. It combined law, logic, and performance to deliver an engaging and thought provoking experience.",
+    description:
+      "Courtroom Drama event - where participants presented legal arguments, witness statements, and dramatic proceedings in a simulated court setting. It combined law, logic, and performance to deliver an engaging and thought provoking experience.",
     images: [
       "/images/events/event2/1.jpg",
       "/images/events/event2/2.jpg",
@@ -44,7 +45,8 @@ const events = [
     date: "May 3, 2025",
     status: "past",
     poster: "/images/events/event3/1.jpg",
-    description: "Organised in LNUniverse 2025, the annual college fest of LNCT, by the Orator’s Club,  the Brainsprint evhaanent was a thirlling combination of knowledge, wit, creativity, and fun. It featured a series of mentally stimulating and physical activites.",
+    description:
+      "Organised in LNUniverse 2025, the annual college fest of LNCT, by the Orator's Club, the Brainsprint event was a thrilling combination of knowledge, wit, creativity, and fun. It featured a series of mentally stimulating and physical activities.",
     images: [
       "/images/events/event3/1.jpg",
       "/images/events/event3/2.jpg",
@@ -150,6 +152,7 @@ export default function Events() {
             whileInView="visible"
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 + index * 0.2 }}
+            className="event-card"
             style={{
               background: "rgba(255,255,255,0.04)",
               backdropFilter: "blur(16px)",
@@ -167,17 +170,18 @@ export default function Events() {
           >
             {/* Top Section — Poster + Info */}
             <div
+              className="event-top"
               style={{
                 display: "flex",
-                gap: "0px",
                 flexWrap: "wrap"
               }}
             >
               {/* Poster */}
               <div
+                className="event-poster"
                 style={{
                   flex: "1 1 400px",
-                  height: "300px",
+                  minHeight: "250px",
                   overflow: "hidden"
                 }}
               >
@@ -187,6 +191,7 @@ export default function Events() {
                   style={{
                     width: "100%",
                     height: "100%",
+                    minHeight: "250px",
                     objectFit: "cover",
                     transition: "transform 0.4s ease"
                   }}
@@ -201,6 +206,7 @@ export default function Events() {
 
               {/* Info */}
               <div
+                className="event-info"
                 style={{
                   flex: "1 1 300px",
                   padding: "36px",
@@ -254,13 +260,20 @@ export default function Events() {
                 </p>
 
                 {/* Buttons */}
-                <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+                <div
+                  className="event-buttons"
+                  style={{
+                    display: "flex",
+                    gap: "12px",
+                    flexWrap: "wrap"
+                  }}
+                >
                   {event.status === "upcoming" ? (
                     <a
                       href="#register"
                       style={{
                         display: "inline-block",
-                        padding: "10px 28px",
+                        padding: "10px 24px",
                         background:
                           "linear-gradient(135deg, #7C5CFF, #9b7aff)",
                         color: "#ffffff",
@@ -270,7 +283,8 @@ export default function Events() {
                         letterSpacing: "1px",
                         fontFamily: "sans-serif",
                         fontWeight: "600",
-                        transition: "opacity 0.3s ease"
+                        transition: "opacity 0.3s ease",
+                        whiteSpace: "nowrap"
                       }}
                       onMouseEnter={(e) =>
                         (e.target.style.opacity = "0.85")
@@ -285,14 +299,15 @@ export default function Events() {
                     <span
                       style={{
                         display: "inline-block",
-                        padding: "10px 28px",
+                        padding: "10px 24px",
                         background: "rgba(255,255,255,0.05)",
                         color: "#A8B0C0",
                         borderRadius: "30px",
                         fontSize: "13px",
                         letterSpacing: "1px",
                         fontFamily: "sans-serif",
-                        border: "1px solid rgba(255,255,255,0.1)"
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        whiteSpace: "nowrap"
                       }}
                     >
                       Event Ended
@@ -303,7 +318,7 @@ export default function Events() {
                   <button
                     onClick={() => toggleGallery(index)}
                     style={{
-                      padding: "10px 28px",
+                      padding: "10px 24px",
                       background: "transparent",
                       color: "#7C5CFF",
                       borderRadius: "30px",
@@ -313,7 +328,8 @@ export default function Events() {
                       fontWeight: "600",
                       border: "1px solid rgba(124,92,255,0.4)",
                       cursor: "pointer",
-                      transition: "all 0.3s ease"
+                      transition: "all 0.3s ease",
+                      whiteSpace: "nowrap"
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.background = "rgba(124,92,255,0.15)"
@@ -339,13 +355,14 @@ export default function Events() {
                   style={{ overflow: "hidden" }}
                 >
                   <div
+                    className="event-gallery"
                     style={{
                       padding: "24px",
                       borderTop: "1px solid rgba(124,92,255,0.15)",
                       display: "grid",
                       gridTemplateColumns:
-                        "repeat(auto-fill, minmax(180px, 1fr))",
-                      gap: "16px"
+                        "repeat(auto-fill, minmax(140px, 1fr))",
+                      gap: "12px"
                     }}
                   >
                     {event.images.map((img, imgIndex) => (
@@ -358,7 +375,7 @@ export default function Events() {
                           delay: imgIndex * 0.08
                         }}
                         style={{
-                          borderRadius: "16px",
+                          borderRadius: "12px",
                           overflow: "hidden",
                           border: "1px solid rgba(124,92,255,0.15)",
                           cursor: "pointer"
@@ -369,7 +386,7 @@ export default function Events() {
                           alt={`${event.title} ${imgIndex + 1}`}
                           style={{
                             width: "100%",
-                            height: "160px",
+                            height: "140px",
                             objectFit: "cover",
                             transition: "transform 0.4s ease"
                           }}
