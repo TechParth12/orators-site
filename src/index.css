@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+}
+
 html, body, #root {
   width: 100%;
   min-height: 100%;
@@ -12,6 +17,10 @@ html, body, #root {
 
 html {
   scroll-behavior: smooth;
+}
+
+canvas {
+  touch-action: none;
 }
 
 /* Tablet */
@@ -29,7 +38,6 @@ html {
 /* Mobile */
 @media (max-width: 768px) {
 
-  /* Show hamburger, hide desktop links */
   .desktop-links {
     display: none !important;
   }
@@ -46,23 +54,19 @@ html {
     display: flex !important;
   }
 
-  /* Navbar */
   nav {
     padding: 14px 20px !important;
   }
 
-  /* Hero */
   #home {
     height: 100vh;
     height: 100dvh;
   }
 
-  /* Sections */
   section {
     padding: 80px 20px !important;
   }
 
-  /* Headings */
   h2 {
     font-size: 28px !important;
     letter-spacing: 3px !important;
@@ -76,31 +80,26 @@ html {
     font-size: 13px !important;
   }
 
-  /* Team grid */
   #team div[style*="grid"] {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 16px !important;
   }
 
-  /* Faculty card */
   #faculty div[style*="400px"] {
     max-width: 90% !important;
   }
 
-  /* Flex wraps to column */
   #vision div[style*="flex-wrap"],
   #about div[style*="flex-wrap"] {
     flex-direction: column !important;
     align-items: center !important;
   }
 
-  /* Registration form */
   #register form {
     padding: 32px 20px !important;
     max-width: 100% !important;
   }
 
-  /* Footer */
   footer {
     padding: 60px 20px 30px !important;
   }
@@ -110,14 +109,12 @@ html {
     gap: 40px !important;
   }
 
-  /* Glass cards */
   div[style*="280px"],
   div[style*="260px"] {
     width: 100% !important;
     max-width: 320px !important;
   }
 
-  /* Event cards mobile */
   .event-top {
     flex-direction: column !important;
   }

@@ -3,10 +3,7 @@ import Navbar from "./Navbar"
 import StarBackground from "./StarBackground"
 import About from "./About"
 import Vision from "./Vision"
-import Faculty from "./Faculty"
-import Team from "./Team"
 import Events from "./Events"
-import Register from "./Register"
 import Footer from "./Footer"
 import { motion } from "framer-motion"
 
@@ -108,17 +105,8 @@ export default function HomePage() {
       {/* VISION / MISSION SECTION */}
       <Vision />
 
-      {/* FACULTY INCHARGE */}
-      <Faculty />
-
-      {/* TEAM SECTION */}
-      <Team />
-
       {/* EVENTS SECTION */}
       <Events />
-
-      {/* REGISTRATION SECTION */}
-      <Register />
 
       {/* FOOTER */}
       <Footer />

@@ -269,33 +269,28 @@ export default function Events() {
                   }}
                 >
                   {event.status === "upcoming" ? (
-                    <a
-                      href="#register"
-                      style={{
-                        display: "inline-block",
-                        padding: "10px 24px",
-                        background:
-                          "linear-gradient(135deg, #7C5CFF, #9b7aff)",
-                        color: "#ffffff",
-                        borderRadius: "30px",
-                        textDecoration: "none",
-                        fontSize: "13px",
-                        letterSpacing: "1px",
-                        fontFamily: "sans-serif",
-                        fontWeight: "600",
-                        transition: "opacity 0.3s ease",
-                        whiteSpace: "nowrap"
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.opacity = "0.85")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.opacity = "1")
-                      }
-                    >
-                      Register Now
-                    </a>
-                  ) : (
+  <a
+    href="/register"
+    style={{
+      display: "inline-block",
+      padding: "10px 24px",
+      background: "linear-gradient(135deg, #7C5CFF, #9b7aff)",
+      color: "#ffffff",
+      borderRadius: "30px",
+      textDecoration: "none",
+      fontSize: "13px",
+      letterSpacing: "1px",
+      fontFamily: "sans-serif",
+      fontWeight: "600",
+      transition: "opacity 0.3s ease",
+      whiteSpace: "nowrap"
+    }}
+    onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
+    onMouseLeave={(e) => (e.target.style.opacity = "1")}
+  >
+    Register Now
+  </a>
+) : (
                     <span
                       style={{
                         display: "inline-block",
