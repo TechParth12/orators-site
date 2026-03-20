@@ -1,11 +1,19 @@
 import { motion } from "framer-motion"
+import { useNavigate, useLocation } from "react-router-dom"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0 }
 }
 
-const quickLinks = ["Home", "About", "Events", "Team", "Contact"]
+// ✅ Updated: Now matches Navbar's navigation logic
+const quickLinks = [
+  { name: "Home", path: "/", hash: "#home" },
+  { name: "About", path: "/", hash: "#about" },
+  { name: "Events", path: "/", hash: "#events" },
+  { name: "Team", path: "/team", hash: "" },
+  { name: "Contact", path: "/", hash: "#contact" },
+]
 
 const socialLinks = [
   { name: "Instagram", url: "https://www.instagram.com/oratorsclub_lncts?igsh=MWt2dXlrdjl4bXk3Zw==" },
@@ -13,6 +21,34 @@ const socialLinks = [
 ]
 
 export default function Footer() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // ✅ Same navigation logic as Navbar
+  const handleQuickLinkClick = (item) => {
+    if (item.path === "/" && location.pathname === "/") {
+      if (item.hash) {
+        const element = document.querySelector(item.hash)
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" })
+        }
+      }
+    } else if (item.path === "/") {
+      navigate("/")
+      setTimeout(() => {
+        if (item.hash) {
+          const element = document.querySelector(item.hash)
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" })
+          }
+        }
+      }, 300)
+    } else {
+      navigate(item.path)
+      window.scrollTo(0, 0)
+    }
+  }
+
   return (
     <footer
       id="contact"
@@ -64,7 +100,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Column 2 — Quick Links */}
+        {/* Column 2 — Quick Links (✅ FIXED) */}
         <div style={{ flex: "1 1 160px" }}>
           <h4
             style={{
@@ -86,22 +122,23 @@ export default function Footer() {
             }}
           >
             {quickLinks.map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
+              <span
+                key={link.name}
+                onClick={() => handleQuickLinkClick(link)}
                 style={{
                   color: "#A8B0C0",
                   textDecoration: "none",
                   fontSize: "14px",
                   fontFamily: "sans-serif",
                   transition: "color 0.3s ease",
-                  letterSpacing: "1px"
+                  letterSpacing: "1px",
+                  cursor: "pointer"
                 }}
                 onMouseEnter={(e) => (e.target.style.color = "#7C5CFF")}
                 onMouseLeave={(e) => (e.target.style.color = "#A8B0C0")}
               >
-                {link}
-              </a>
+                {link.name}
+              </span>
             ))}
           </div>
         </div>

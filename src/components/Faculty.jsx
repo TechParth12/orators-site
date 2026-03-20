@@ -108,7 +108,7 @@ export default function Faculty() {
             letterSpacing: "2px"
           }}
         >
-          Dr. Amitbodh Upadhyay
+          Dr. Amitbodh Upadhyaya
         </h3>
 
         {/* Role */}
