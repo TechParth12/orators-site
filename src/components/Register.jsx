@@ -76,8 +76,8 @@ export default function Register() {
     if (!formData.teamName.trim()) newErrors.teamName = "Team name is required"
     if (!formData.teamCount) {
       newErrors.teamCount = "Team count is required"
-    } else if (isNaN(formData.teamCount) || formData.teamCount < 1) {
-      newErrors.teamCount = "Enter valid number"
+    } else if (isNaN(formData.teamCount) || formData.teamCount < 3 || formData.teamCount > 5) {
+      newErrors.teamCount = "Team must have 3 to 5 members only"
     }
 
     if (formData.teamMembers.length > 0) {
@@ -101,7 +101,7 @@ export default function Register() {
 
     if (name === "teamCount") {
       const count = parseInt(value) || 0
-      const clampedCount = Math.min(Math.max(count, 0), 20)
+      const clampedCount = Math.min(Math.max(count, 0), 5)
 
       const currentMembers = [...formData.teamMembers]
       const newMembers = []
@@ -443,7 +443,7 @@ export default function Register() {
               )}
             </div>
 
-            {/* Event Selection (✅ FIXED — real event names) */}
+            {/* Event Selection */}
             <div>
               <label style={labelStyle}>Select Event</label>
               <select
@@ -475,7 +475,7 @@ export default function Register() {
               {errors.event && <p style={errorTextStyle}>{errors.event}</p>}
             </div>
 
-            {/* ✅ NEW — Team Name */}
+            {/* Team Name */}
             <div>
               <label style={labelStyle}>Team Name</label>
               <input
@@ -502,17 +502,17 @@ export default function Register() {
               )}
             </div>
 
-            {/* Team Count */}
+            {/* Team Count (Min: 3, Max: 5) */}
             <div>
-              <label style={labelStyle}>Team Members Count</label>
+              <label style={labelStyle}>Team Members Count (Min: 3, Max: 5)</label>
               <input
                 type="number"
                 name="teamCount"
                 value={formData.teamCount}
                 onChange={handleChange}
-                placeholder="Number of team members"
-                min="1"
-                max="20"
+                placeholder="Enter 3, 4 or 5"
+                min="3"
+                max="5"
                 style={{
                   ...inputStyle,
                   borderColor: errors.teamCount
