@@ -46,6 +46,7 @@ export default function Register() {
     college: "",
     enrollment: "",
     event: "",
+    teamName: "",
     teamCount: "",
     teamMembers: []
   })
@@ -72,6 +73,7 @@ export default function Register() {
     if (!formData.enrollment.trim())
       newErrors.enrollment = "Enrollment number is required"
     if (!formData.event) newErrors.event = "Please select an event"
+    if (!formData.teamName.trim()) newErrors.teamName = "Team name is required"
     if (!formData.teamCount) {
       newErrors.teamCount = "Team count is required"
     } else if (isNaN(formData.teamCount) || formData.teamCount < 1) {
@@ -151,6 +153,7 @@ export default function Register() {
         college: formData.college,
         enrollment: formData.enrollment,
         event: formData.event,
+        teamName: formData.teamName,
         teamCount: formData.teamCount,
         teamMembers: formData.teamMembers,
         registeredAt: new Date().toISOString()
@@ -165,6 +168,7 @@ export default function Register() {
         college: "",
         enrollment: "",
         event: "",
+        teamName: "",
         teamCount: "",
         teamMembers: []
       })
@@ -439,7 +443,7 @@ export default function Register() {
               )}
             </div>
 
-            {/* Event Selection */}
+            {/* Event Selection (✅ FIXED — real event names) */}
             <div>
               <label style={labelStyle}>Select Event</label>
               <select
@@ -464,11 +468,38 @@ export default function Register() {
                 <option value="" style={{ background: "#0b0b0f" }}>
                   Choose an event
                 </option>
-                <option value="event1" style={{ background: "#0b0b0f" }}>
-                  Upcoming Event Title
+                <option value="Orbit" style={{ background: "#0b0b0f" }}>
+                  Orbit 
                 </option>
               </select>
               {errors.event && <p style={errorTextStyle}>{errors.event}</p>}
+            </div>
+
+            {/* ✅ NEW — Team Name */}
+            <div>
+              <label style={labelStyle}>Team Name</label>
+              <input
+                type="text"
+                name="teamName"
+                value={formData.teamName}
+                onChange={handleChange}
+                placeholder="Enter your team name"
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.teamName
+                    ? "rgba(255,107,107,0.5)"
+                    : "rgba(124,92,255,0.2)"
+                }}
+                onFocus={(e) =>
+                  (e.target.style.borderColor = "#7C5CFF")
+                }
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
+                }
+              />
+              {errors.teamName && (
+                <p style={errorTextStyle}>{errors.teamName}</p>
+              )}
             </div>
 
             {/* Team Count */}
