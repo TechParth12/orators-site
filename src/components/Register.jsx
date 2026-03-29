@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
-import { collection, addDoc } from "firebase/firestore"
+import { useState, useEffect } from "react"
+import { collection, addDoc, doc, getDoc } from "firebase/firestore"
 import { db } from "../firebase"
+import { useNavigate } from "react-router-dom"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 60 },
@@ -54,6 +55,25 @@ export default function Register() {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [regStatus, setRegStatus] = useState("open")
+  const [checkingStatus, setCheckingStatus] = useState(true)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const docRef = doc(db, "settings", "registrations")
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          setRegStatus(docSnap.data().status || "open")
+        }
+      } catch (error) {
+        console.error("Error fetching reg status:", error)
+      }
+      setCheckingStatus(false)
+    }
+    fetchStatus()
+  }, [])
 
   const validate = () => {
     const newErrors = {}
@@ -177,6 +197,107 @@ export default function Register() {
       alert("Registration failed. Please try again.")
       console.error(error)
     }
+  }
+
+  // Show loading while checking status
+  if (checkingStatus) {
+    return (
+      <section
+        id="register"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          zIndex: 2
+        }}
+      >
+        <p style={{ color: "#A8B0C0", fontSize: "16px", fontFamily: "sans-serif" }}>
+          Loading...
+        </p>
+      </section>
+    )
+  }
+
+  // Show closed message if registrations are closed
+  if (regStatus === "closed") {
+    return (
+      <section
+        id="register"
+        style={{
+          minHeight: "100vh",
+          padding: "120px 60px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          zIndex: 2
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          style={{
+            maxWidth: "500px",
+            width: "100%",
+            padding: "60px 40px",
+            background: "rgba(255,255,255,0.04)",
+            backdropFilter: "blur(16px)",
+            border: "1px solid rgba(255,107,107,0.25)",
+            borderRadius: "24px",
+            textAlign: "center"
+          }}
+        >
+          <div style={{ fontSize: "60px", marginBottom: "20px" }}>🔒</div>
+          <h3
+            style={{
+              fontSize: "28px",
+              fontFamily: "serif",
+              color: "#ffffff",
+              marginBottom: "16px",
+              letterSpacing: "2px"
+            }}
+          >
+            Registrations Closed
+          </h3>
+          <p
+            style={{
+              fontSize: "15px",
+              color: "#A8B0C0",
+              fontFamily: "sans-serif",
+              lineHeight: "1.8",
+              marginBottom: "30px"
+            }}
+          >
+            Registrations for the current event are now closed.
+            Follow us on social media for updates on upcoming events!
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            style={{
+              padding: "12px 32px",
+              background: "linear-gradient(135deg, #7C5CFF, #9b7aff)",
+              color: "#ffffff",
+              borderRadius: "30px",
+              border: "none",
+              fontSize: "14px",
+              letterSpacing: "1px",
+              fontFamily: "sans-serif",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "opacity 0.3s ease"
+            }}
+            onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.target.style.opacity = "1")}
+          >
+            Back to Home
+          </button>
+        </motion.div>
+      </section>
+    )
   }
 
   return (
@@ -469,7 +590,7 @@ export default function Register() {
                   Choose an event
                 </option>
                 <option value="Orbit" style={{ background: "#0b0b0f" }}>
-                  Orbit 
+                  Orbit — April 04 & 18, 2026
                 </option>
               </select>
               {errors.event && <p style={errorTextStyle}>{errors.event}</p>}
@@ -502,7 +623,7 @@ export default function Register() {
               )}
             </div>
 
-            {/* Team Count (Min: 3, Max: 5) */}
+            {/* Team Count */}
             <div>
               <label style={labelStyle}>Team Members Count (Min: 3, Max: 5)</label>
               <input

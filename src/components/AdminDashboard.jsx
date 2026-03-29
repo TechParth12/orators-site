@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore"
+import { collection, getDocs, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore"
 import { signOut } from "firebase/auth"
 import { db, auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
@@ -7,10 +7,13 @@ import { useNavigate } from "react-router-dom"
 export default function AdminDashboard() {
   const [registrations, setRegistrations] = useState([])
   const [loading, setLoading] = useState(true)
+  const [regStatus, setRegStatus] = useState("open")
+  const [toggling, setToggling] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     fetchRegistrations()
+    fetchRegStatus()
   }, [])
 
   const fetchRegistrations = async () => {
@@ -26,6 +29,35 @@ export default function AdminDashboard() {
       console.error("Error:", error)
     }
     setLoading(false)
+  }
+
+  const fetchRegStatus = async () => {
+    try {
+      const docRef = doc(db, "settings", "registrations")
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        setRegStatus(docSnap.data().status || "open")
+      } else {
+        await setDoc(docRef, { status: "open" })
+        setRegStatus("open")
+      }
+    } catch (error) {
+      console.error("Error fetching status:", error)
+    }
+  }
+
+  const toggleRegStatus = async () => {
+    setToggling(true)
+    try {
+      const newStatus = regStatus === "open" ? "closed" : "open"
+      const docRef = doc(db, "settings", "registrations")
+      await setDoc(docRef, { status: newStatus })
+      setRegStatus(newStatus)
+    } catch (error) {
+      console.error("Error toggling:", error)
+      alert("Failed to update status. Try again.")
+    }
+    setToggling(false)
   }
 
   const handleDelete = async (id) => {
@@ -109,7 +141,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats + Registration Toggle */}
       <div
         style={{
           display: "flex",
@@ -118,6 +150,7 @@ export default function AdminDashboard() {
           flexWrap: "wrap"
         }}
       >
+        {/* Total Registrations */}
         <div
           style={{
             padding: "24px 36px",
@@ -144,6 +177,95 @@ export default function AdminDashboard() {
             }}
           >
             Total Registrations
+          </p>
+        </div>
+
+        {/* ✅ Registration Toggle Card */}
+        <div
+          style={{
+            padding: "24px 36px",
+            background: "rgba(255,255,255,0.04)",
+            border: regStatus === "open"
+              ? "1px solid rgba(74,222,128,0.3)"
+              : "1px solid rgba(255,107,107,0.3)",
+            borderRadius: "20px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "16px",
+            minWidth: "220px"
+          }}
+        >
+          {/* Status Text */}
+          <div style={{ textAlign: "center" }}>
+            <p
+              style={{
+                fontSize: "13px",
+                color: "#A8B0C0",
+                letterSpacing: "1px",
+                marginBottom: "6px"
+              }}
+            >
+              Registrations are
+            </p>
+            <p
+              style={{
+                fontSize: "22px",
+                fontWeight: "700",
+                color: regStatus === "open" ? "#4ade80" : "#ff6b6b",
+                letterSpacing: "2px",
+                textTransform: "uppercase"
+              }}
+            >
+              {regStatus === "open" ? "🟢 OPEN" : "🔴 CLOSED"}
+            </p>
+          </div>
+
+          {/* Toggle Switch */}
+          <div
+            onClick={!toggling ? toggleRegStatus : undefined}
+            style={{
+              width: "64px",
+              height: "34px",
+              borderRadius: "17px",
+              background: regStatus === "open"
+                ? "rgba(74,222,128,0.3)"
+                : "rgba(255,107,107,0.3)",
+              border: regStatus === "open"
+                ? "1px solid rgba(74,222,128,0.5)"
+                : "1px solid rgba(255,107,107,0.5)",
+              position: "relative",
+              cursor: toggling ? "not-allowed" : "pointer",
+              transition: "all 0.3s ease",
+              opacity: toggling ? 0.5 : 1
+            }}
+          >
+            <div
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "50%",
+                background: regStatus === "open" ? "#4ade80" : "#ff6b6b",
+                position: "absolute",
+                top: "3px",
+                left: regStatus === "open" ? "34px" : "3px",
+                transition: "all 0.3s ease",
+                boxShadow: regStatus === "open"
+                  ? "0 0 12px rgba(74,222,128,0.5)"
+                  : "0 0 12px rgba(255,107,107,0.5)"
+              }}
+            />
+          </div>
+
+          <p
+            style={{
+              fontSize: "11px",
+              color: "#A8B0C0",
+              letterSpacing: "1px",
+              opacity: 0.6
+            }}
+          >
+            Click to {regStatus === "open" ? "close" : "open"}
           </p>
         </div>
       </div>
@@ -192,6 +314,7 @@ export default function AdminDashboard() {
                   "College",
                   "Enrollment",
                   "Event",
+                  "Team Name",
                   "Team Count",
                   "Team Members",
                   "Date",
@@ -240,6 +363,9 @@ export default function AdminDashboard() {
                   </td>
                   <td style={{ padding: "14px", color: "#A8B0C0" }}>
                     {reg.event}
+                  </td>
+                  <td style={{ padding: "14px", color: "#A8B0C0" }}>
+                    {reg.teamName || "-"}
                   </td>
                   <td style={{ padding: "14px", color: "#A8B0C0" }}>
                     {reg.teamCount}

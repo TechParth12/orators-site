@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "../firebase"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 60 },
@@ -75,6 +77,22 @@ const badgeStyle = (status) => ({
 
 export default function Events() {
   const [expandedEvent, setExpandedEvent] = useState(null)
+  const [regStatus, setRegStatus] = useState("open")
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const docRef = doc(db, "settings", "registrations")
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          setRegStatus(docSnap.data().status || "open")
+        }
+      } catch (error) {
+        console.error("Error fetching reg status:", error)
+      }
+    }
+    fetchStatus()
+  }, [])
 
   const toggleGallery = (index) => {
     setExpandedEvent(expandedEvent === index ? null : index)
@@ -262,28 +280,48 @@ export default function Events() {
                   }}
                 >
                   {event.status === "upcoming" ? (
-  <a
-    href="/register"
-    style={{
-      display: "inline-block",
-      padding: "10px 24px",
-      background: "linear-gradient(135deg, #7C5CFF, #9b7aff)",
-      color: "#ffffff",
-      borderRadius: "30px",
-      textDecoration: "none",
-      fontSize: "13px",
-      letterSpacing: "1px",
-      fontFamily: "sans-serif",
-      fontWeight: "600",
-      transition: "opacity 0.3s ease",
-      whiteSpace: "nowrap"
-    }}
-    onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
-    onMouseLeave={(e) => (e.target.style.opacity = "1")}
-  >
-    Register Now
-  </a>
-) : (
+                    regStatus === "open" ? (
+                      <a
+                        href="/register"
+                        style={{
+                          display: "inline-block",
+                          padding: "10px 24px",
+                          background: "linear-gradient(135deg, #7C5CFF, #9b7aff)",
+                          color: "#ffffff",
+                          borderRadius: "30px",
+                          textDecoration: "none",
+                          fontSize: "13px",
+                          letterSpacing: "1px",
+                          fontFamily: "sans-serif",
+                          fontWeight: "600",
+                          transition: "opacity 0.3s ease",
+                          whiteSpace: "nowrap"
+                        }}
+                        onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
+                        onMouseLeave={(e) => (e.target.style.opacity = "1")}
+                      >
+                        Register Now
+                      </a>
+                    ) : (
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "10px 24px",
+                          background: "rgba(255,107,107,0.1)",
+                          color: "#ff6b6b",
+                          borderRadius: "30px",
+                          fontSize: "13px",
+                          letterSpacing: "1px",
+                          fontFamily: "sans-serif",
+                          fontWeight: "600",
+                          border: "1px solid rgba(255,107,107,0.3)",
+                          whiteSpace: "nowrap"
+                        }}
+                      >
+                        🔒 Registrations Closed
+                      </span>
+                    )
+                  ) : (
                     <span
                       style={{
                         display: "inline-block",
