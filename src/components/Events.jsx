@@ -10,12 +10,12 @@ const fadeUp = {
 
 const events = [
   {
-    title: "Sherlocked",
-    date: "September, 2026",
+    title: "Sherlock'd",
+    date: "September 26, 2026",
     status: "upcoming",
     poster: "/images/events/event0/1.jpeg",
     description:
-      "Sherlocked is a thrilling detective event that challenges participants to solve intricate mysteries, uncover hidden clues, and piece together complex narratives. It tests analytical thinking, attention to detail, and deductive reasoning.",
+      "Sherlock'd is a thrilling detective event that challenges participants to solve intricate mysteries, uncover hidden clues, and piece together complex narratives. It tests analytical thinking, attention to detail, and deductive reasoning.",
     images: [
       "/images/events/event0/1.jpeg",
     ]
