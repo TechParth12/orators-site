@@ -589,8 +589,8 @@ export default function Register() {
                 <option value="" style={{ background: "#0b0b0f" }}>
                   Choose an event
                 </option>
-                <option value="Orbit" style={{ background: "#0b0b0f" }}>
-                  Orbit — April 04 & 18, 2026
+                <option value="Sherlock'd" style={{ background: "#0b0b0f" }}>
+                  Sherlock'd — September 26, 2026
                 </option>
               </select>
               {errors.event && <p style={errorTextStyle}>{errors.event}</p>}
