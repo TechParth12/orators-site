@@ -12,11 +12,19 @@ const events = [
   {
     title: "Orbit",
     date: "April 04, 2026 and April 18, 2026",
-    status: "upcoming",
+    status: "past",
     poster: "/images/events/event1/1.jpg",
     description: "Orbit is rebirth of our flagship event Brain Sprint. It is an immersive experience where participants navigate intellectual challenges, adapt to unexpected turns, and assert their voice with confidence and intent.",
     images: [
       "/images/events/event1/1.jpg",
+      "/images/events/event1/2.jpg",
+      "/images/events/event1/3.jpg",
+      "/images/events/event1/4.jpg",
+      "/images/events/event1/5.jpg",
+      "/images/events/event1/6.jpg",
+      "/images/events/event1/7.jpg",
+      "/images/events/event1/8.jpg",
+      "/images/events/event1/9.jpg"
     ]
   },
   {
