@@ -96,8 +96,8 @@ export default function Register() {
     if (!formData.teamName.trim()) newErrors.teamName = "Team name is required"
     if (!formData.teamCount) {
       newErrors.teamCount = "Team count is required"
-    } else if (isNaN(formData.teamCount) || formData.teamCount < 3 || formData.teamCount > 5) {
-      newErrors.teamCount = "Team must have 3 to 5 members only"
+    } else if (isNaN(formData.teamCount) || formData.teamCount !== 4) {
+      newErrors.teamCount = "Team must have 4 members only"
     }
 
     if (formData.teamMembers.length > 0) {
@@ -121,7 +121,7 @@ export default function Register() {
 
     if (name === "teamCount") {
       const count = parseInt(value) || 0
-      const clampedCount = Math.min(Math.max(count, 0), 5)
+      const clampedCount = Math.min(Math.max(count, 4),4)
 
       const currentMembers = [...formData.teamMembers]
       const newMembers = []
@@ -625,15 +625,15 @@ export default function Register() {
 
             {/* Team Count */}
             <div>
-              <label style={labelStyle}>Team Members Count (Min: 3, Max: 5)</label>
+              <label style={labelStyle}>Team Members Count (Min: 4, Max: 4)</label>
               <input
                 type="number"
                 name="teamCount"
                 value={formData.teamCount}
                 onChange={handleChange}
-                placeholder="Enter 3, 4 or 5"
-                min="3"
-                max="5"
+                placeholder="Enter 4"
+                min="4"
+                max="4"
                 style={{
                   ...inputStyle,
                   borderColor: errors.teamCount
@@ -682,7 +682,7 @@ export default function Register() {
                     Enter Team Member Names
                   </p>
 
-                  {formData.teamMembers.map((member, index) => (
+                  {formData.teamMembers.map((member, index ) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
