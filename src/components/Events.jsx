@@ -10,6 +10,17 @@ const fadeUp = {
 
 const events = [
   {
+    title: "Sherlocked",
+    date: "September, 2026",
+    status: "upcoming",
+    poster: "/images/events/event0/1.jpeg",
+    description:
+      "Sherlocked is a thrilling detective event that challenges participants to solve intricate mysteries, uncover hidden clues, and piece together complex narratives. It tests analytical thinking, attention to detail, and deductive reasoning.",
+    images: [
+      "/images/events/event0/1.jpeg",
+    ]
+  },
+  {
     title: "Orbit",
     date: "April 04, 2026 and April 18, 2026",
     status: "past",
