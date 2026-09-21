@@ -626,27 +626,34 @@ export default function Register() {
             {/* Team Count */}
             <div>
               <label style={labelStyle}>Team Members Count (Min: 4, Max: 4)</label>
-              <input
-                type="number"
-                name="teamCount"
-                value={formData.teamCount}
-                onChange={handleChange}
-                placeholder="Enter 4"
-                min="4"
-                max="4"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.teamCount
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
-              />
+<input
+  type="number"
+  name="teamCount"
+  value={formData.teamCount}
+  onChange={(e) =>
+    handleChange({
+      target: {
+        name: "teamCount",
+        value: Number(e.target.value),
+      },
+    })
+  }
+  placeholder="Enter 4"
+  min="4"
+  max="4"
+  style={{
+    ...inputStyle,
+    borderColor: errors.teamCount
+      ? "rgba(255,107,107,0.5)"
+      : "rgba(124,92,255,0.2)"
+  }}
+  onFocus={(e) =>
+    (e.target.style.borderColor = "#7C5CFF")
+  }
+  onBlur={(e) =>
+    (e.target.style.borderColor = "rgba(124,92,255,0.2)")
+  }
+/>
               {errors.teamCount && (
                 <p style={errorTextStyle}>{errors.teamCount}</p>
               )}
