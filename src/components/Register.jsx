@@ -4,6 +4,8 @@ import { collection, addDoc, doc, getDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { useNavigate } from "react-router-dom"
 
+const REQUIRED_TEAM_SIZE = 4
+
 const fadeUp = {
   hidden: { opacity: 0, y: 60 },
   visible: { opacity: 1, y: 0 }
@@ -39,19 +41,20 @@ const errorTextStyle = {
   marginTop: "6px"
 }
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    college: "",
-    enrollment: "",
-    event: "",
-    teamName: "",
-    teamCount: "",
-    teamMembers: []
-  })
+const emptyForm = {
+  name: "",
+  email: "",
+  phone: "",
+  college: "",
+  enrollment: "",
+  event: "",
+  teamName: "",
+  teamCount: "",
+  teamMembers: []
+}
 
+export default function Register() {
+  const [formData, setFormData] = useState(emptyForm)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -94,10 +97,14 @@ export default function Register() {
       newErrors.enrollment = "Enrollment number is required"
     if (!formData.event) newErrors.event = "Please select an event"
     if (!formData.teamName.trim()) newErrors.teamName = "Team name is required"
-    if (!formData.teamCount) {
+
+    // FIX: the input value is a string ("4"), so compare it as a number.
+    // The old check `formData.teamCount !== 4` was always true for strings.
+    const count = Number(formData.teamCount)
+    if (formData.teamCount === "" || formData.teamCount === null) {
       newErrors.teamCount = "Team count is required"
-    } else if (isNaN(formData.teamCount) || formData.teamCount !== 4) {
-      newErrors.teamCount = "Team must have 4 members only"
+    } else if (!Number.isInteger(count) || count !== REQUIRED_TEAM_SIZE) {
+      newErrors.teamCount = `Team must have ${REQUIRED_TEAM_SIZE} members only`
     }
 
     if (formData.teamMembers.length > 0) {
@@ -120,14 +127,12 @@ export default function Register() {
     const { name, value } = e.target
 
     if (name === "teamCount") {
-      const count = parseInt(value) || 0
-      const clampedCount = Math.min(Math.max(count, 4),4)
+      const count = parseInt(value, 10) || 0
+      const membersNeeded = count === REQUIRED_TEAM_SIZE ? REQUIRED_TEAM_SIZE : 0
 
-      const currentMembers = [...formData.teamMembers]
       const newMembers = []
-
-      for (let i = 0; i < clampedCount; i++) {
-        newMembers.push(currentMembers[i] || "")
+      for (let i = 0; i < membersNeeded; i++) {
+        newMembers.push(formData.teamMembers[i] || "")
       }
 
       setFormData({
@@ -167,36 +172,35 @@ export default function Register() {
 
     try {
       await addDoc(collection(db, "registrations"), {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        college: formData.college,
-        enrollment: formData.enrollment,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        college: formData.college.trim(),
+        enrollment: formData.enrollment.trim(),
         event: formData.event,
-        teamName: formData.teamName,
-        teamCount: formData.teamCount,
-        teamMembers: formData.teamMembers,
+        teamName: formData.teamName.trim(),
+        teamCount: Number(formData.teamCount),
+        teamMembers: formData.teamMembers.map((m) => m.trim()),
         registeredAt: new Date().toISOString()
       })
 
       setLoading(false)
       setSubmitted(true)
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        college: "",
-        enrollment: "",
-        event: "",
-        teamName: "",
-        teamCount: "",
-        teamMembers: []
-      })
+      setErrors({})
+      setFormData(emptyForm)
     } catch (error) {
       setLoading(false)
       alert("Registration failed. Please try again.")
       console.error(error)
     }
+  }
+
+  const borderFor = (hasError) =>
+    hasError ? "rgba(255,107,107,0.5)" : "rgba(124,92,255,0.2)"
+
+  const focusProps = {
+    onFocus: (e) => (e.target.style.borderColor = "#7C5CFF"),
+    onBlur: (e) => (e.target.style.borderColor = "rgba(124,92,255,0.2)")
   }
 
   // Show loading while checking status
@@ -444,18 +448,8 @@ export default function Register() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter your full name"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.name
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                style={{ ...inputStyle, borderColor: borderFor(errors.name) }}
+                {...focusProps}
               />
               {errors.name && <p style={errorTextStyle}>{errors.name}</p>}
             </div>
@@ -469,18 +463,8 @@ export default function Register() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.email
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                style={{ ...inputStyle, borderColor: borderFor(errors.email) }}
+                {...focusProps}
               />
               {errors.email && <p style={errorTextStyle}>{errors.email}</p>}
             </div>
@@ -494,18 +478,8 @@ export default function Register() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="10-digit phone number"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.phone
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                style={{ ...inputStyle, borderColor: borderFor(errors.phone) }}
+                {...focusProps}
               />
               {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
             </div>
@@ -519,22 +493,10 @@ export default function Register() {
                 value={formData.college}
                 onChange={handleChange}
                 placeholder="Enter your college name"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.college
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                style={{ ...inputStyle, borderColor: borderFor(errors.college) }}
+                {...focusProps}
               />
-              {errors.college && (
-                <p style={errorTextStyle}>{errors.college}</p>
-              )}
+              {errors.college && <p style={errorTextStyle}>{errors.college}</p>}
             </div>
 
             {/* Enrollment */}
@@ -546,18 +508,8 @@ export default function Register() {
                 value={formData.enrollment}
                 onChange={handleChange}
                 placeholder="Enter enrollment number"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.enrollment
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                style={{ ...inputStyle, borderColor: borderFor(errors.enrollment) }}
+                {...focusProps}
               />
               {errors.enrollment && (
                 <p style={errorTextStyle}>{errors.enrollment}</p>
@@ -573,18 +525,11 @@ export default function Register() {
                 onChange={handleChange}
                 style={{
                   ...inputStyle,
-                  borderColor: errors.event
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)",
+                  borderColor: borderFor(errors.event),
                   appearance: "none",
                   cursor: "pointer"
                 }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                {...focusProps}
               >
                 <option value="" style={{ background: "#0b0b0f" }}>
                   Choose an event
@@ -605,55 +550,26 @@ export default function Register() {
                 value={formData.teamName}
                 onChange={handleChange}
                 placeholder="Enter your team name"
-                style={{
-                  ...inputStyle,
-                  borderColor: errors.teamName
-                    ? "rgba(255,107,107,0.5)"
-                    : "rgba(124,92,255,0.2)"
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "#7C5CFF")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-                }
+                style={{ ...inputStyle, borderColor: borderFor(errors.teamName) }}
+                {...focusProps}
               />
-              {errors.teamName && (
-                <p style={errorTextStyle}>{errors.teamName}</p>
-              )}
+              {errors.teamName && <p style={errorTextStyle}>{errors.teamName}</p>}
             </div>
 
             {/* Team Count */}
             <div>
               <label style={labelStyle}>Team Members Count (Min: 4, Max: 4)</label>
-<input
-  type="number"
-  name="teamCount"
-  value={formData.teamCount}
-  onChange={(e) =>
-    handleChange({
-      target: {
-        name: "teamCount",
-        value: Number(e.target.value),
-      },
-    })
-  }
-  placeholder="Enter 4"
-  min="4"
-  max="4"
-  style={{
-    ...inputStyle,
-    borderColor: errors.teamCount
-      ? "rgba(255,107,107,0.5)"
-      : "rgba(124,92,255,0.2)"
-  }}
-  onFocus={(e) =>
-    (e.target.style.borderColor = "#7C5CFF")
-  }
-  onBlur={(e) =>
-    (e.target.style.borderColor = "rgba(124,92,255,0.2)")
-  }
-/>
+              <input
+                type="number"
+                name="teamCount"
+                value={formData.teamCount}
+                onChange={handleChange}
+                placeholder="Enter 4"
+                min="4"
+                max="4"
+                style={{ ...inputStyle, borderColor: borderFor(errors.teamCount) }}
+                {...focusProps}
+              />
               {errors.teamCount && (
                 <p style={errorTextStyle}>{errors.teamCount}</p>
               )}
@@ -689,7 +605,7 @@ export default function Register() {
                     Enter Team Member Names
                   </p>
 
-                  {formData.teamMembers.map((member, index ) => (
+                  {formData.teamMembers.map((member, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
@@ -714,19 +630,12 @@ export default function Register() {
                         placeholder={`Enter name of member ${index + 1}`}
                         style={{
                           ...inputStyle,
-                          borderColor:
+                          borderColor: borderFor(
                             errors.teamMembers &&
-                            errors.teamMembers.includes(index)
-                              ? "rgba(255,107,107,0.5)"
-                              : "rgba(124,92,255,0.2)"
+                              errors.teamMembers.includes(index)
+                          )
                         }}
-                        onFocus={(e) =>
-                          (e.target.style.borderColor = "#7C5CFF")
-                        }
-                        onBlur={(e) =>
-                          (e.target.style.borderColor =
-                            "rgba(124,92,255,0.2)")
-                        }
+                        {...focusProps}
                       />
                       {errors.teamMembers &&
                         errors.teamMembers.includes(index) && (
